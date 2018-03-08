@@ -94,11 +94,13 @@ function begin() {
               if(error) throw error;
               console.log("Your order has been placed! Your total purchase is $" + total.toFixed(2) + ".");
               console.log("The total amount left is " + amountLeft + ".");
+              reprompt();
             });
           }
 
             else {
               console.log("Insufficient amount in stock. Cannot fulfill your order.");
+              reprompt();
             }
           
             })
@@ -110,5 +112,26 @@ begin();
 
 
 
+function reprompt() {
 
+  inquirer
+    .prompt ([
+      {
+        type: 'list',
+        name: 'choice',
+        message: "Do you wish to purchase something else?",
+        choices: [
+          'yes',
+          'no'
+        ]
+      }
+    ]). then (answers => {
+      if (answers.choice === 'yes') {
+        begin();
+      }
+     if (answers.choice === 'no') {
+        connection.end();
+      }
+    })
+}
   
